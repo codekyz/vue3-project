@@ -9,7 +9,8 @@
           <input
             class="form-check-input"
             type="checkbox"
-            v-model="todo.completed"
+            :value="todo.completed"
+            @change="toggleTodo(index)"
           >
           <label
             class="form-check-label"
@@ -33,8 +34,23 @@
 
 <script>
 export default {
-    props: ['todos']
+    // props: ['todos']
+    // 오브젝트로 받아오면 type과 required 지정 가능
+    props: {
+        todos: {
+            type: Array,
+            required : true
+        }
+    },
+    setup(props, context) {
+        const toggleTodo = (index) => {
+            context.emit('toggle-todo', index);
+        };
 
+        return {
+            toggleTodo,
+        }
+    }
 }
 </script>
 
