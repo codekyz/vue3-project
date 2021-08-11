@@ -11,6 +11,7 @@
     >
     <hr/>
     <TodoSimpleform @add-todo="addTodo" />
+    <div style="color: red">{{ error }}</div>
     
     <div v-if="!filterTodos.length">
       There is nothing to display
@@ -29,6 +30,7 @@
 import { ref, computed } from 'vue';
 import TodoSimpleform from './components/TodoSimpleform.vue';
 import TodoList from './components/TodoList.vue'
+import axios from 'axios';
 
 export default {
   components: {
@@ -38,24 +40,66 @@ export default {
   setup() {
     const todos = ref([]);
     //todos에 들어갈 아이템은 자식컴포넌트인 심플폼에서 부모컴포넌트인 앱.vue로 넘겨 준것
+    const error = ref('');
+
+    const getTodos = async () => {
+      try {
+        const res = await axios.get('http://localhost:3000/todos');
+        todos.value = res.data;
+      } catch (err) {
+        console.log(err);
+        error.value = 'Something went wrong.';
+      }
+    };
+
+    getTodos();
 
     const tosoStyle = {
       textDecoration: 'line-through',
       color: 'gray'
     }
-    const addTodo = (todo) => {
-      todos.value.push(todo);
+    const addTodo = async (todo) => {
+      error.value = '';
+      //error 메세지 초기화
+      try {
+        const res = await axios.post('http://localhost:3000/todos', {
+          subject: todo.subject,
+          completed: todo.completed,
+        });
+        todos.value.push(res.data);
+      } catch (err) {
+        console.log(err);
+        error.value = 'Something went wrong.';
+      }
+      //async와 await를 이용하여 then,catch 사용과 같은 효고
+      
     };
 
-    const deleteTodo = (index) => {
-      todos.value.splice(index, 1);
+    const deleteTodo = async (index) => {
+      error.value = '';
+      const id = todos.value[index].id;
+      try {
+        await axios.delete('http://localhost:3000/todos/' + id);
+        todos.value.splice(index, 1);
+      } catch (err) {
+        console.log(err);
+        error.value = 'Something went wrong.';
+      }
     };
 
 
-    const toggleTodo = (index) => {
-      console.log(todos.value[index]);
-      todos.value[index].completed = !todos.value[index].completed;
-      console.log(todos.value[index]);
+    const toggleTodo = async (index) => {
+      error.value = '';
+      const id = todos.value[index].id;
+      try {
+        await axios.patch('http://localhost:3000/todos/' + id, {
+          completed: !todos.value[index].completed
+        });
+        todos.value[index].completed = !todos.value[index].completed;
+      } catch (err) {
+        console.log(err);
+        error.value = 'Something went wrong.';
+      }
     };
 
     const searchText = ref('');
@@ -79,6 +123,7 @@ export default {
       toggleTodo,
       searchText,
       filterTodos,
+      error,
     };
   }
 }
