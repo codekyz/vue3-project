@@ -22,6 +22,28 @@
     @delete-todo="deleteTodo"
     />
     <!-- 자식 컴포넌트에서 todos라는 이름으로 todos 데이터에 접근 가능 -->
+    <hr />
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li v-if="currentPage !== 1" class="page-item">
+          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage - 1)">Previous</a>
+        </li>
+
+        <li
+          v-for="page in numOfPages"
+          :key="page"
+          class="page-item"
+          :class="currentPage === page ? 'active' : ''"
+        >
+          <a style="cursor: pointer" class="page-link" @click="getTodos(page)">{{page}}</a>
+        </li>
+
+        <li v-if="numOfPages !== currentPage" class="page-item">
+          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
 
   </div>
 </template>
@@ -41,10 +63,21 @@ export default {
     const todos = ref([]);
     //todos에 들어갈 아이템은 자식컴포넌트인 심플폼에서 부모컴포넌트인 앱.vue로 넘겨 준것
     const error = ref('');
+    const numOfTodos = ref(0);
+    const limit = 5;
+    const currentPage = ref(1);
 
-    const getTodos = async () => {
+    const numOfPages = computed(() => {
+      return Math.ceil(numOfTodos.value/limit);
+    });
+
+    const getTodos = async (page = currentPage.value) => {
+      currentPage.value = page;
       try {
-        const res = await axios.get('http://localhost:3000/todos');
+        const res = await axios.get(
+          `http://localhost:3000/todos?_page=${page}&_limit=${limit}`
+          );
+        numOfTodos.value = res.headers['x-total-count']
         todos.value = res.data;
       } catch (err) {
         console.log(err);
@@ -124,6 +157,9 @@ export default {
       searchText,
       filterTodos,
       error,
+      numOfPages,
+      currentPage,
+      getTodos,
     };
   }
 }
