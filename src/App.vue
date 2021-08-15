@@ -27,7 +27,9 @@
     <nav aria-label="Page navigation example">
       <ul class="pagination">
         <li v-if="currentPage !== 1" class="page-item">
-          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage - 1)">Previous</a>
+          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage - 1)">
+            Previous
+          </a>
         </li>
 
         <li
@@ -36,11 +38,15 @@
           class="page-item"
           :class="currentPage === page ? 'active' : ''"
         >
-          <a style="cursor: pointer" class="page-link" @click="getTodos(page)">{{page}}</a>
+          <a style="cursor: pointer" class="page-link" @click="getTodos(page)">
+            {{page}}
+          </a>
         </li>
 
         <li v-if="numOfPages !== currentPage" class="page-item">
-          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage + 1)">Next</a>
+          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage + 1)">
+            Next
+          </a>
         </li>
       </ul>
     </nav>
@@ -49,7 +55,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, watch, } from 'vue';
 import TodoSimpleform from './components/TodoSimpleform.vue';
 import TodoList from './components/TodoList.vue'
 import axios from 'axios';
@@ -66,10 +72,11 @@ export default {
     const numOfTodos = ref(0);
     const limit = 5;
     const currentPage = ref(1);
-
+    
     const numOfPages = computed(() => {
       return Math.ceil(numOfTodos.value/limit);
     });
+
 
     const getTodos = async (page = currentPage.value) => {
       currentPage.value = page;

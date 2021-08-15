@@ -1,16 +1,6 @@
 {
   "todos": [
     {
-      "subject": "asdf",
-      "completed": true,
-      "id": 2
-    },
-    {
-      "subject": "asdf",
-      "completed": true,
-      "id": 3
-    },
-    {
       "subject": "카던",
       "completed": false,
       "id": 4
@@ -59,6 +49,16 @@
       "subject": "쿠크세이튼",
       "completed": false,
       "id": 13
+    },
+    {
+      "subject": "asdf",
+      "completed": false,
+      "id": 14
+    },
+    {
+      "subject": "asdf",
+      "completed": false,
+      "id": 15
     }
   ]
 }

@@ -44,6 +44,7 @@ export default {
     },
     emits: ['toggle-todo','delete-todo'],
     setup(props, { emit }) {
+
         const toggleTodo = (index) => {
             emit('toggle-todo', index);
         };
