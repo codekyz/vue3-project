@@ -32,33 +32,18 @@
     },
     {
       "subject": "아르고스",
-      "completed": false,
+      "completed": true,
       "id": 12
     },
     {
       "subject": "쿠크세이튼",
-      "completed": false,
+      "completed": true,
       "id": 13
     },
     {
-      "subject": "asdf",
+      "subject": "asdf122",
       "completed": true,
       "id": 14
-    },
-    {
-      "subject": "asdf",
-      "completed": true,
-      "id": 15
-    },
-    {
-      "subject": "새로운",
-      "completed": true,
-      "id": 16
-    },
-    {
-      "subject": "가장최근",
-      "completed": true,
-      "id": 17
     }
   ]
 }

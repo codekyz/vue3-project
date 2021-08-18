@@ -6,7 +6,7 @@
           class="form-control"
           type="text"
           v-model="todo"
-          placeholder="Type new to-do"
+          placeholder="Typo new to-do"
         >
       </div>
       <div>
