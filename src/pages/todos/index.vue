@@ -51,8 +51,12 @@
         </li>
       </ul>
     </nav>
-
   </div>
+  <Toast
+    v-if="showToast"
+    :message="toastMessage"
+    :type="toastAlertType"
+  />
 </template>
 
 <script>
@@ -60,11 +64,14 @@ import { ref, computed, watch } from 'vue';
 import TodoSimpleform from '@/components/TodoSimpleform.vue';
 import TodoList from '@/components/TodoList.vue'
 import axios from 'axios';
+import Toast from '@/components/Toast.vue';
+import { useToast } from '@/composables/toast';
 
 export default {
   components: {
     TodoSimpleform,
     TodoList,
+    Toast,
   },
   setup() {
     const todos = ref([]);
@@ -74,10 +81,20 @@ export default {
     const limit = 5;
     const currentPage = ref(1);
     const searchText = ref('');
-    
+
+  
     const numOfPages = computed(() => {
       return Math.ceil(numOfTodos.value/limit);
     });
+
+    const {
+      toastMessage,
+      toastAlertType,
+      showToast,
+      triggerToast
+    } = useToast();
+
+    
 
     const getTodos = async (page = currentPage.value) => {
       currentPage.value = page;
@@ -90,6 +107,7 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger');
       }
     };
 
@@ -111,6 +129,7 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger');
       }
       //async와 await를 이용하여 then,catch 사용과 같은 효고
       
@@ -125,6 +144,7 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger');
       }
     };
 
@@ -141,6 +161,7 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong.';
+        triggerToast('Something went wrong', 'danger');
       }
     };
 
@@ -179,6 +200,10 @@ export default {
       currentPage,
       getTodos,
       searchTodo,
+      toastMessage,
+      toastAlertType,
+      showToast,
+      triggerToast,
     };
   }
 }
