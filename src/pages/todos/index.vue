@@ -1,8 +1,15 @@
 <template>
-
   <div>
-    <h2>To-Do List</h2>
+    <div class="d-flex justify-content-between mb-3">
+      <h2>To-Do List</h2>
+      <button 
+        class="btn btn-primary"
+        @click="moveToCreatePage"
+      >
+        Create Todo
+      </button>
 
+    </div>
     <input
       class="form-control"
       type="text"
@@ -11,8 +18,6 @@
       @keyup.enter="searchTodo"
     >
     <hr/>
-    <TodoSimpleform @add-todo="addTodo" />
-    <div style="color: red">{{ error }}</div>
     
     <div v-if="!todos.length">
       There is nothing to display
@@ -61,19 +66,19 @@
 
 <script>
 import { ref, computed, watch } from 'vue';
-import TodoSimpleform from '@/components/TodoSimpleform.vue';
 import TodoList from '@/components/TodoList.vue'
 import axios from 'axios';
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
+import { useRouter } from 'vue-router';
 
 export default {
   components: {
-    TodoSimpleform,
     TodoList,
     Toast,
   },
   setup() {
+    const router = useRouter();
     const todos = ref([]);
     //todos에 들어갈 아이템은 자식컴포넌트인 심플폼에서 부모컴포넌트인 앱.vue로 넘겨 준것
     const error = ref('');
@@ -165,6 +170,12 @@ export default {
       }
     };
 
+    const moveToCreatePage = () => {
+      router.push({
+        name: 'TodoCreate'
+      }
+    )};
+
     //search func
     let timeout = null;
     const searchTodo = () => {
@@ -203,7 +214,7 @@ export default {
       toastMessage,
       toastAlertType,
       showToast,
-      triggerToast,
+      moveToCreatePage
     };
   }
 }
