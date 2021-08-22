@@ -72,9 +72,9 @@
       "id": 18
     },
     {
-      "subject": "수정",
-      "completed": false,
-      "body": "ㄴㅇㄹ",
+      "subject": "8월 22일",
+      "completed": true,
+      "body": "수정했다요.",
       "id": 19
     }
   ]
