@@ -6,7 +6,7 @@
   >
     <div class="row">
       <div class="col-6">
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>Subject</label>
           <input v-model="todo.subject"
             type="text"
@@ -18,7 +18,12 @@
           >
             {{subjectError}}
           </div>
-        </div>
+        </div> -->
+        <Input 
+          label="Subject"
+          v-model:subject="todo.subject"
+          :error="subjectError"
+        />
       </div>
       <div v-if="editing" class="col-6">
           <div class="form-group">
@@ -70,14 +75,16 @@
 <script>
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
-import { ref, computed } from "vue";
+import { ref, computed, onUpdated } from "vue";
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
+import Input from '@/components/Input.vue';
 
 export default {
   components: {
-    Toast
+    Toast,
+    Input,
   },
   props: {
       editing: {
@@ -93,6 +100,10 @@ export default {
       completed: false,
       body: ''
     });
+    onUpdated(() => {
+      console.log(todo.value.subject);
+    });
+
     const subjectError = ref('');
     const originalTodo = ref(null);
     const loading = ref(false);
@@ -186,17 +197,13 @@ export default {
       showToast,
       toastMessage,
       toastAlertType,
-      subjectError
+      subjectError,
     };
   },
 };
 </script>
 
 <style>
-  .text-red {
-    color: red
-  }
-
   .fade-enter-active,
   .fade-leave-active {
     transition: all 0.5s ease;
