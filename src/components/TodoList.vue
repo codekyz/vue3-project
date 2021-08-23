@@ -1,32 +1,42 @@
 <template>
-  <div v-for="(todo, index) in todos" :key="todo.id" class="card mt-2">
-    <div
-      class="card-body p-2 d-flex align-items-center"
-      style="cursor: pointer"
-      @click="moveToPage(todo.id)"
-    >
-      <div class="flex-grow-1">
-        <input
-          class="ml-2 mr-2"
-          type="checkbox"
-          :checked="todo.completed"
-          @change="toggleTodo(index, $event)"
-          @click.stop
-        />
-        <span :class="{ todo: todo.completed }">
-          {{ todo.subject }}
-        </span>
+  <!-- <div 
+    v-for="(todo, index) in todos" 
+    :key="todo.id" 
+    class="card mt-2"
+  > -->
+  <List
+    :items="todos"
+  >
+    <template #default="{ item, index }">
+      <div
+        class="card-body p-2 d-flex align-items-center"
+        style="cursor: pointer"
+        @click="moveToPage(item.id)"
+      >
+        <div class="flex-grow-1">
+          <input
+            class="ml-2 mr-2"
+            type="checkbox"
+            :checked="item.completed"
+            @change="toggleTodo(index, $event)"
+            @click.stop
+          />
+          <span :class="{ todo: item.completed }">
+            {{ item.subject }}
+          </span>
+        </div>
+        <div>
+          <button
+            class="btn btn-danger btn-sm"
+            @click.stop="openModal(item.id)"
+          >
+            Delete
+          </button>
+        </div>
       </div>
-      <div>
-        <button
-          class="btn btn-danger btn-sm"
-          @click.stop="openModal(todo.id)"
-        >
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
+    </template>
+  </List>
+  <!-- </div> -->
   <teleport to="#modal">
     <Modal 
       v-if="showModal"
@@ -40,9 +50,12 @@
 import { useRouter } from "vue-router";
 import Modal from "@/components/DeleteModal.vue";
 import { ref } from 'vue';
+import List from '@/components/List.vue';
+
 export default {
   components: {
     Modal,
+    List,
   },
   // props: ['todos']
   // 오브젝트로 받아오면 type과 required 지정 가능
