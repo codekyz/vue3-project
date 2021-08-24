@@ -1,24 +1,13 @@
 <template>
-  <div v-if="loading">Loading...</div>
+  <div v-if="loading">
+    Loading...
+  </div>
   <form 
     v-else
     @submit.prevent="onSave"
   >
     <div class="row">
       <div class="col-6">
-        <!-- <div class="form-group">
-          <label>Subject</label>
-          <input v-model="todo.subject"
-            type="text"
-            class="form-control"
-          />
-          <div
-            v-if="subjectError"
-            class="text-red"
-          >
-            {{subjectError}}
-          </div>
-        </div> -->
         <Input 
           label="Subject"
           v-model:subject="todo.subject"
@@ -43,7 +32,6 @@
           <div class="form-group">
           <label>Body</label>
           <textarea v-model="todo.body" class="form-control" cols="30" rows="10">
-
           </textarea>
         </div>
       </div>
@@ -57,6 +45,7 @@
         {{ editing ? 'Update' : 'Create' }}
     </button>
     <button 
+        type="button"
         class="btn btn-outline-dark ml-2"
         @click="moveToTodosListPage"
     >
@@ -74,8 +63,8 @@
 
 <script>
 import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
-import { ref, computed, onUpdated } from "vue";
+import axios from "@/axios";
+import { ref, computed } from "vue";
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
@@ -100,9 +89,6 @@ export default {
       completed: false,
       body: ''
     });
-    onUpdated(() => {
-      console.log(todo.value.subject);
-    });
 
     const subjectError = ref('');
     const originalTodo = ref(null);
@@ -120,9 +106,7 @@ export default {
     const getTodo = async () => {
       loading.value = true;
       try {
-        const res = await axios.get(
-          `http://localhost:3000/todos/${todoId}`
-        );
+        const res = await axios.get(`todos/${todoId}`);
         todo.value = { ...res.data };
         originalTodo.value = { ...res.data };
   
@@ -165,15 +149,11 @@ export default {
           body: todo.value.body,
         }
         if (props.editing) {
-          res = await axios.put(`
-            http://localhost:3000/todos/${todoId}
-            `, data);
+          res = await axios.put(`todos/${todoId}`, data);
           originalTodo.value = { ...res.data };
           subjectError.value = '';
         } else {
-          res = await axios.post(`
-            http://localhost:3000/todos
-            `, data);
+          res = await axios.post('todos', data);
           todo.value.subject = '';
           todo.value.body = '';
           subjectError.value = '';
