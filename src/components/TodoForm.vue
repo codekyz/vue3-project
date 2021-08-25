@@ -137,6 +137,7 @@ export default {
     }
 
     const onSave = async () => {
+      subjectError.value = '';
       if (!todo.value.subject) {
         subjectError.value = 'Subject is required';
         return;
@@ -151,12 +152,10 @@ export default {
         if (props.editing) {
           res = await axios.put(`todos/${todoId}`, data);
           originalTodo.value = { ...res.data };
-          subjectError.value = '';
         } else {
           res = await axios.post('todos', data);
           todo.value.subject = '';
           todo.value.body = '';
-          subjectError.value = '';
         }
 
         const message = 'Successfully ' + (props.editing ? 'Updated!' : 'Created!');
