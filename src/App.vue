@@ -1,16 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <router-link class="navbar-brand" :to="{ name: 'Home' }">
-      Codekyz
-    </router-link>
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <router-link class="nav-link" :to="{ name: 'Todos' }">
-          Todos
-        </router-link>
-      </li>
-    </ul>
-  </nav>
+  <Navber />
   <div class="container">
     <router-view />
   </div>
@@ -19,10 +8,12 @@
 
 <script>
 import Toast from '@/components/Toast.vue';
+import Navber from '@/components/Navbar.vue';
 
 export default {
   components: {
-    Toast
+    Toast,
+    Navber,
   },
 };
 </script>

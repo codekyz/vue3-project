@@ -29,33 +29,13 @@
     />
     <!-- 자식 컴포넌트에서 todos라는 이름으로 todos 데이터에 접근 가능 -->
     <hr />
-
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li v-if="currentPage !== 1" class="page-item">
-          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage - 1)">
-            Previous
-          </a>
-        </li>
-
-        <li
-          v-for="page in numOfPages"
-          :key="page"
-          class="page-item"
-          :class="currentPage === page ? 'active' : ''"
-        >
-          <a style="cursor: pointer" class="page-link" @click="getTodos(page)">
-            {{page}}
-          </a>
-        </li>
-
-        <li v-if="numOfPages !== currentPage" class="page-item">
-          <a style="cursor: pointer" class="page-link" @click="getTodos(currentPage + 1)">
-            Next
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <Pagination 
+      v-if="todos.length"
+      :numOfPages="numOfPages"
+      :currentPage="currentPage"
+      @click="getTodos"
+    />
+    
   </div>
 </template>
 
@@ -65,10 +45,12 @@ import TodoList from '@/components/TodoList.vue'
 import axios from '@/axios';
 import { useToast } from '@/composables/toast';
 import { useRouter } from 'vue-router';
+import Pagination from '@/components/Pagination.vue';
 
 export default {
   components: {
     TodoList,
+    Pagination,
   },
   setup() {
     const router = useRouter();
